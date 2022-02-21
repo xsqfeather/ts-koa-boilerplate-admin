@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Admin, Resource } from "react-admin";
+import dataProvider from "./dataProvider";
+import { ArticleCreate } from "./resources/articles/ArticleCreate";
+import { ArticleEdit } from "./resources/articles/ArticleEdit";
+import { ArticleList } from "./resources/articles/ArticleList";
+import { AuthorCreate } from "./resources/authors/AuthorCreate";
+import { AuthorEdit } from "./resources/authors/AuthorEdit";
+import { AuthorList } from "./resources/authors/AuthorList";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = (): JSX.Element => (
+  <Admin dataProvider={dataProvider("http://localhost:8001/api/v1")}>
+    <Resource
+      name="articles"
+      list={ArticleList}
+      create={ArticleCreate}
+      edit={ArticleEdit}
+    />
+    <Resource
+      name="authors"
+      list={AuthorList}
+      create={AuthorCreate}
+      edit={AuthorEdit}
+    />
+  </Admin>
+);
 
 export default App;

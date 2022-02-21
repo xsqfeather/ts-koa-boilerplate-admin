@@ -1,0 +1,31 @@
+{
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "cSpell.words": [
+    "amala",
+    "asynciterable",
+    "bignumber",
+    "bson",
+    "Datagrid",
+    "dplayer",
+    "dtos",
+    "Emittery",
+    "ipfs",
+    "IPFSHTTP",
+    "tinymce",
+    "TTFB",
+    "typedi",
+    "typegoose"
+  ],
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.fixAll.eslint": true,
+  },
+}
