@@ -1,19 +1,12 @@
-import {
-  Create,
-  SimpleForm,
-  TextInput,
-  CreateProps,
-  BooleanInput,
-} from "react-admin";
+import { Create, SimpleForm, TextInput, CreateProps } from "react-admin";
 
-export const AccessRuleCreate = (props: CreateProps): JSX.Element => (
+export const BlockRuleCreate = (props: CreateProps): JSX.Element => (
   <Create {...props}>
     <SimpleForm>
       <TextInput source="name" />
       <TextInput source="fact" />
       <TextInput source="operator" />
       <TextInput source="value" />
-      <BooleanInput source="allowed" />
     </SimpleForm>
   </Create>
 );
