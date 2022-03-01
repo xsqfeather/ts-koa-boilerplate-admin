@@ -1,5 +1,7 @@
 import { Admin, Resource } from "react-admin";
 import dataProvider from "./dataProvider";
+import { AccessRuleCreate } from "./resources/access_rules/AccessRuleCreate";
+import { AccessRuleList } from "./resources/access_rules/AccessRuleList";
 import { ArticleCreate } from "./resources/articles/ArticleCreate";
 import { ArticleEdit } from "./resources/articles/ArticleEdit";
 import { ArticleList } from "./resources/articles/ArticleList";
@@ -20,6 +22,11 @@ const App = (): JSX.Element => (
       list={AuthorList}
       create={AuthorCreate}
       edit={AuthorEdit}
+    />
+    <Resource
+      name="access_rules"
+      list={AccessRuleList}
+      create={AccessRuleCreate}
     />
   </Admin>
 );
