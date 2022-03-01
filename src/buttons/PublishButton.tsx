@@ -10,7 +10,7 @@ export const PublishManyButton = (
   return (
     <BulkUpdateButton
       {...props}
-      label="Reset Views"
+      label="Publish"
       data={toPublish}
       icon={<VisibilityOff />}
     />
