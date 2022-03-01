@@ -18,14 +18,15 @@ const PostBulkActionButtons = (props: any): JSX.Element => (
   </Fragment>
 );
 
-export const ArticleList = (props: ListProps): JSX.Element => (
+export const AccessRuleList = (props: ListProps): JSX.Element => (
   <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
     <Datagrid rowClick="edit">
-      <TextField source="id" />
-      <BooleanField source="isPublished" />
-      <TextField source="title" />
-      <TextField source="body" />
-      <TextField source="cover" />
+      <TextField source="name" />
+      <TextField source="fact" />
+      <TextField source="ruleNumber" />
+      <TextField source="operator" />
+      <TextField source="value" />
+      <BooleanField source="allowed" />
     </Datagrid>
   </List>
 );
