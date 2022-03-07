@@ -8,6 +8,7 @@ import {
 } from "react-admin";
 import { PublishManyButton } from "../../buttons/PublishButton";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const PostBulkActionButtons = (props: any): JSX.Element => (
   <Fragment>
     <PublishManyButton {...props} />

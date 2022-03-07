@@ -14,7 +14,9 @@
     "tinymce",
     "TTFB",
     "typedi",
-    "typegoose"
+    "typegoose",
+    "undoable",
+    "zipcode"
   ],
   "[typescriptreact]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"

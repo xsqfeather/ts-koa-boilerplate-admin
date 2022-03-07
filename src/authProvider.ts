@@ -17,7 +17,7 @@ const authProvider: AuthProvider = {
     deviceId?: string;
     captchaCode?: string;
   }): Promise<any> => {
-    const response = await axios.post(`${REST_API}/sessions`, {
+    const response = await axios.post(`${REST_API}/auth/login`, {
       username,
       captchaCode,
       deviceId,
@@ -33,7 +33,7 @@ const authProvider: AuthProvider = {
     }
   },
   register: (registerType: string) => {
-    return axios.post(`${REST_API}/sessions`, {
+    return axios.post(`${REST_API}/auth/register`, {
       registerType,
     });
   },

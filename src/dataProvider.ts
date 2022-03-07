@@ -6,6 +6,7 @@ import {
   GetManyResult,
 } from "ra-core";
 import { GetListParams, GetListResult } from "react-admin";
+import InfoStorage from "./utils/InfoStorage";
 
 /**
  * Maps react-admin queries to a simple REST API
@@ -39,133 +40,132 @@ import { GetListParams, GetListResult } from "react-admin";
  *
  * export default App;
  */
+
 export default (
   apiUrl: string,
   httpClient = fetchUtils.fetchJson,
   countHeader = "Content-Range"
-): DataProvider => ({
-  getList: async (
-    resource: string,
-    params: GetListParams
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): Promise<GetListResult<any>> => {
-    const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
-
-    const rangeStart = (page - 1) * perPage;
-    const rangeEnd = page * perPage - 1;
-
-    const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([rangeStart, rangeEnd]),
-      filter: JSON.stringify(params.filter),
-    };
-    const url = `${apiUrl}/${resource}?${stringify(query)}`;
-
-    const { json } = await httpClient(url);
-
-    return {
-      data: json.data,
-      total: json.total,
-    };
-  },
-
-  getOne: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-      data: json,
-    })),
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getMany: async (resource, params): Promise<GetManyResult<any>> => {
-    const query = {
-      filter: JSON.stringify({ id: params.ids }),
-    };
-    const url = `${apiUrl}/${resource}?${stringify(query)}`;
-    const { json } = await httpClient(url);
-    return { data: json };
-  },
-
-  getManyReference: (
-    resource: string,
-    params: GetManyReferenceParams
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): Promise<GetListResult<any>> => {
-    const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
-
-    const rangeStart = (page - 1) * perPage;
-    const rangeEnd = page * perPage - 1;
-
-    const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-      filter: JSON.stringify({
-        ...params.filter,
-        [params.target]: params.id,
-      }),
-    };
-    const url = `${apiUrl}/${resource}?${stringify(query)}`;
-    const options =
-      countHeader === "Content-Range"
-        ? {
-            // Chrome doesn't return `Content-Range` header if no `Range` is provided in the request.
-            headers: new Headers({
-              Range: `${resource}=${rangeStart}-${rangeEnd}`,
-            }),
-          }
-        : {};
-
-    return httpClient(url, options).then(({ headers, json }) => {
-      if (!headers.has(countHeader)) {
-        throw new Error(
-          `The ${countHeader} header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare ${countHeader} in the Access-Control-Expose-Headers header?`
-        );
+): DataProvider => {
+  const token = InfoStorage.getItem("token");
+  const options = token
+    ? {
+        headers: new Headers({
+          Authorization: token,
+        }),
       }
-      return {
-        data: json,
-        total: 10,
+    : {};
+  return {
+    getList: async (
+      resource: string,
+      params: GetListParams
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): Promise<GetListResult<any>> => {
+      const { page, perPage } = params.pagination;
+      const { field, order } = params.sort;
+
+      const rangeStart = (page - 1) * perPage;
+      const rangeEnd = page * perPage - 1;
+
+      const query = {
+        sort: JSON.stringify([field, order]),
+        range: JSON.stringify([rangeStart, rangeEnd]),
+        filter: JSON.stringify(params.filter),
       };
-    });
-  },
+      const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-  update: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`, {
-      method: "PUT",
-      body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json })),
+      const { json } = await httpClient(url, options);
 
-  // simple-rest doesn't handle provide an updateMany route, so we fallback to calling update n times instead
-  updateMany: (resource, params) =>
-    Promise.all(
-      params.ids.map((id) =>
-        httpClient(`${apiUrl}/${resource}/${id}`, {
-          method: "PUT",
-          body: JSON.stringify(params.data),
-        })
-      )
-    ).then((responses) => ({ data: responses.map(({ json }) => json.id) })),
+      return {
+        data: json.data,
+        total: json.total,
+      };
+    },
 
-  create: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}`, {
-      method: "POST",
-      body: JSON.stringify(params.data),
-    }).then(({ json }) => ({
-      data: { ...params.data, id: json.id },
-    })),
+    getOne: (resource, params) =>
+      httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+        data: json,
+      })),
 
-  delete: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`, {
-      method: "DELETE",
-      headers: new Headers({
-        "Content-Type": "text/plain",
-      }),
-    }).then(({ json }) => ({ data: json })),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    getMany: async (resource, params): Promise<GetManyResult<any>> => {
+      const query = {
+        filter: JSON.stringify({ id: params.ids }),
+      };
+      const url = `${apiUrl}/${resource}?${stringify(query)}`;
+      const { json } = await httpClient(url);
+      return { data: json };
+    },
 
-  deleteMany: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}?ids=${JSON.stringify(params.ids)}`, {
-      method: "DELETE",
-      headers: new Headers({
-        "Content-Type": "text/plain",
-      }),
-    }).then(({ json }) => ({ data: json })),
-});
+    getManyReference: (
+      resource: string,
+      params: GetManyReferenceParams
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): Promise<GetListResult<any>> => {
+      const { page, perPage } = params.pagination;
+      const { field, order } = params.sort;
+
+      const query = {
+        sort: JSON.stringify([field, order]),
+        range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+        filter: JSON.stringify({
+          ...params.filter,
+          [params.target]: params.id,
+        }),
+      };
+      const url = `${apiUrl}/${resource}?${stringify(query)}`;
+
+      return httpClient(url, options).then(({ headers, json }) => {
+        if (!headers.has(countHeader)) {
+          throw new Error(
+            `The ${countHeader} header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare ${countHeader} in the Access-Control-Expose-Headers header?`
+          );
+        }
+        return {
+          data: json,
+          total: 10,
+        };
+      });
+    },
+
+    update: (resource, params) =>
+      httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        method: "PUT",
+        body: JSON.stringify(params.data),
+      }).then(({ json }) => ({ data: json })),
+
+    // simple-rest doesn't handle provide an updateMany route, so we fallback to calling update n times instead
+    updateMany: (resource, params) =>
+      Promise.all(
+        params.ids.map((id) =>
+          httpClient(`${apiUrl}/${resource}/${id}`, {
+            method: "PUT",
+            body: JSON.stringify(params.data),
+          })
+        )
+      ).then((responses) => ({ data: responses.map(({ json }) => json.id) })),
+
+    create: (resource, params) =>
+      httpClient(`${apiUrl}/${resource}`, {
+        method: "POST",
+        body: JSON.stringify(params.data),
+      }).then(({ json }) => ({
+        data: { ...params.data, id: json.id },
+      })),
+
+    delete: (resource, params) =>
+      httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        method: "DELETE",
+        headers: new Headers({
+          "Content-Type": "text/plain",
+        }),
+      }).then(({ json }) => ({ data: json })),
+
+    deleteMany: (resource, params) =>
+      httpClient(`${apiUrl}/${resource}?ids=${JSON.stringify(params.ids)}`, {
+        method: "DELETE",
+        headers: new Headers({
+          "Content-Type": "text/plain",
+        }),
+      }).then(({ json }) => ({ data: json })),
+  };
+};

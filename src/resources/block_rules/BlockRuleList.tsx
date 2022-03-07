@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import {
-  BooleanField,
   BulkDeleteButton,
   Datagrid,
   List,
