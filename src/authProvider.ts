@@ -18,7 +18,7 @@ const authProvider: AuthProvider = {
     captchaCode?: string;
   }): Promise<any> => {
     const response = await axios.post(`${REST_API}/auth/login`, {
-      username,
+      idKey: username,
       captchaCode,
       deviceId,
       password,
