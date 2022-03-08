@@ -28,7 +28,7 @@ const authProvider: AuthProvider = {
     if (!data.token) {
       throw new Error(data.reason);
     }
-    if (data.pass) {
+    if (data.success) {
       InfoStorage.setItem("token", data.token);
     }
   },
@@ -56,6 +56,10 @@ const authProvider: AuthProvider = {
   },
 
   checkAuth: () => {
+    console.log("checkAuth=========");
+
+    console.log(InfoStorage.getItem("token"));
+
     return new Promise((res, rej) => {
       return InfoStorage.getItem("token") ? res() : rej();
     });

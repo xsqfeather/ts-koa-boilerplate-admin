@@ -17,6 +17,12 @@ import { ArticleList } from "./resources/articles/ArticleList";
 import { AuthorCreate } from "./resources/authors/AuthorCreate";
 import { AuthorEdit } from "./resources/authors/AuthorEdit";
 import { AuthorList } from "./resources/authors/AuthorList";
+import visitors from "./resources/visitors";
+import orders from "./resources/orders";
+import invoices from "./resources/invoices";
+import products from "./resources/products";
+import categories from "./resources/categories";
+import reviews from "./resources/reviews";
 
 const i18nProvider = polyglotI18nProvider((locale) => {
   if (locale === "fr") {
@@ -57,6 +63,12 @@ const App = (): JSX.Element => (
       list={BlockRuleList}
       create={BlockRuleCreate}
     />
+    <Resource name="customers" {...visitors} />
+    <Resource name="commands" {...orders} options={{ label: "Orders" }} />
+    <Resource name="invoices" {...invoices} />
+    <Resource name="products" {...products} />
+    <Resource name="categories" {...categories} />
+    <Resource name="reviews" {...reviews} />
   </Admin>
 );
 
