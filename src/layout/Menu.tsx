@@ -20,15 +20,33 @@ import reviews from "../resources/reviews";
 import SubMenu from "./SubMenu";
 import { AppState } from "../types";
 
-type MenuName = "menuCatalog" | "menuSales" | "menuCustomers";
+type MenuName = "menuCatalog" | "menuSales" | "menuCustomers" | "menuFiles";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const MenuItemLinkAsAny: any = MenuItemLink;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  open: {
+    width: 200,
+  },
+  closed: {
+    width: 55,
+  },
+}));
 
 const Menu = ({ dense = false }: MenuProps): ReactElement => {
   const [state, setState] = useState({
     menuCatalog: true,
     menuSales: true,
     menuCustomers: true,
+    menuFiles: false,
   });
   const translate = useTranslate();
   const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
@@ -138,6 +156,36 @@ const Menu = ({ dense = false }: MenuProps): ReactElement => {
           dense={dense}
         />
       </SubMenu>
+      <SubMenu
+        handleToggle={(): void => handleToggle("menuFiles")}
+        isOpen={state.menuFiles}
+        name="pos.menu.files"
+        icon={<orders.icon />}
+        dense={dense}
+      >
+        <MenuItemLinkAsAny
+          to={{
+            pathname: "/storageDirs",
+            state: { _scrollToTop: true },
+          }}
+          primaryText={translate(`resources.storageDirs.name`, {
+            smart_count: 2,
+          })}
+          leftIcon={<orders.icon />}
+          dense={dense}
+        />
+        <MenuItemLinkAsAny
+          to={{
+            pathname: "/storageFiles",
+            state: { _scrollToTop: true },
+          }}
+          primaryText={translate(`resources.storageFiles.name`, {
+            smart_count: 2,
+          })}
+          leftIcon={<invoices.icon />}
+          dense={dense}
+        />
+      </SubMenu>
       <MenuItemLinkAsAny
         to={{
           pathname: "/reviews",
@@ -152,22 +200,5 @@ const Menu = ({ dense = false }: MenuProps): ReactElement => {
     </div>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  open: {
-    width: 200,
-  },
-  closed: {
-    width: 55,
-  },
-}));
 
 export default Menu;
