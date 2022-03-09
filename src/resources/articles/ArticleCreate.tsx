@@ -1,10 +1,4 @@
-import {
-  Create,
-  SimpleForm,
-  TextInput,
-  CreateProps,
-  LinearProgress,
-} from "react-admin";
+import { Create, SimpleForm, TextInput, CreateProps } from "react-admin";
 
 export const ArticleCreate = (props: CreateProps): JSX.Element => (
   <Create {...props}>
