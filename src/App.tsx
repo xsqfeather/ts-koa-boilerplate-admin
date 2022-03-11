@@ -23,6 +23,7 @@ import invoices from "./resources/invoices";
 import products from "./resources/products";
 import categories from "./resources/categories";
 import reviews from "./resources/reviews";
+import storageDirs from "./resources/storageDirs";
 
 const i18nProvider = polyglotI18nProvider((locale) => {
   if (locale === "fr") {
@@ -69,6 +70,7 @@ const App = (): JSX.Element => (
     <Resource name="products" {...products} />
     <Resource name="categories" {...categories} />
     <Resource name="reviews" {...reviews} />
+    <Resource name="storageDirs" {...storageDirs} />
   </Admin>
 );
 
