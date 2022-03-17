@@ -3,7 +3,7 @@ const fakerStorage = {} as unknown as any;
 const InfoStorage = {
   setItem: (key: string, value: string): void => {
     try {
-      localStorage.setItem(key, value);
+      window.localStorage.setItem(key, value);
     } catch (error) {
       console.error(error);
 
@@ -12,7 +12,7 @@ const InfoStorage = {
   },
   getItem: (key: string): string | null => {
     try {
-      return localStorage.getItem(key);
+      return window.localStorage.getItem(key);
     } catch (error) {
       console.error(error);
       return fakerStorage[key];
@@ -20,7 +20,7 @@ const InfoStorage = {
   },
   removeItem: (key: string): void => {
     try {
-      return localStorage.removeItem(key);
+      return window.localStorage.removeItem(key);
     } catch (error) {
       console.error(error);
       return (fakerStorage[key] = undefined);
