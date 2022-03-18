@@ -41,7 +41,7 @@
     "ts-node": "^10.7.0"
   },
   "scripts": {
-    "start": "react-scripts start -p 4001",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
