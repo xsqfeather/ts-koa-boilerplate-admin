@@ -19,7 +19,7 @@ export default function RichEditor(props: InputProps): JSX.Element {
       }}
     >
       <Editor
-        onInit={(_ev, editor: any): void => {
+        onInit={(_ev: any, editor: any): void => {
           editorRef.current = editor;
         }}
         id={"tiny-react_96560485821636127960461"}
@@ -40,7 +40,7 @@ export default function RichEditor(props: InputProps): JSX.Element {
           // },
           placeholder: "type your content",
         }}
-        onEditorChange={(newValue): void => onChange(newValue)}
+        onEditorChange={(newValue: string): void => onChange(newValue)}
         value={value}
         tinymceScriptSrc={
           "http://localhost:8001/statics/plugins/tinymce/tinymce.min.js"
