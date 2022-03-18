@@ -50,7 +50,7 @@ export default (
   const options = token
     ? {
         headers: new Headers({
-          Authorization: token,
+          authorization: token,
         }),
       }
     : {};
@@ -144,13 +144,27 @@ export default (
         )
       ).then((responses) => ({ data: responses.map(({ json }) => json.id) })),
 
-    create: (resource, params) =>
-      httpClient(`${apiUrl}/${resource}`, {
-        method: "POST",
-        body: JSON.stringify(params.data),
-      }).then(({ json }) => ({
-        data: { ...params.data, id: json.id },
-      })),
+    create: async (resource, params) => {
+      try {
+        const { json } = await httpClient(`${apiUrl}/${resource}`, {
+          method: "POST",
+          body: JSON.stringify(params.data),
+          ...options,
+        });
+        if (json) {
+          return {
+            data: { ...params.data, id: json.id },
+          };
+        }
+        return { data: {} };
+      } catch (error: any) {
+        if (error.status === 401) {
+          InfoStorage.removeItem("token");
+          return { data: {} };
+        }
+        throw new Error(error);
+      }
+    },
 
     delete: (resource, params) =>
       httpClient(`${apiUrl}/${resource}/${params.id}`, {
