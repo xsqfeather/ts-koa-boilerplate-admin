@@ -1,10 +1,19 @@
-import { Create, SimpleForm, TextInput, CreateProps } from "react-admin";
+import {
+  Create,
+  SimpleForm,
+  TextInput,
+  CreateProps,
+  ReferenceArrayInput,
+  SelectInput,
+} from "react-admin";
 
 export const StorageDirCreate = (props: CreateProps): JSX.Element => (
   <Create {...props}>
     <SimpleForm>
       <TextInput source="name" />
-      <TextInput source="ipfsCid" />
+      <ReferenceArrayInput source="superiorId" reference="storageDirs">
+        <SelectInput optionText="name" />
+      </ReferenceArrayInput>
     </SimpleForm>
   </Create>
 );

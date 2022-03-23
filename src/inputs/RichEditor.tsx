@@ -30,7 +30,7 @@ export default function RichEditor(props: InputProps): JSX.Element {
           toolbar:
             "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | image",
           images_upload_url:
-            "http://localhost:8001/api/v1/articles/cover/upload",
+            "http://localhost:8001/api/v1/articles/edit/upload",
           // automatic_uploads: false,
           // block_unsupported_drop: false,
           // automatic_uploads: true,

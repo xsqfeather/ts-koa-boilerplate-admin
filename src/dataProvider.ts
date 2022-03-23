@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { stringify } from "query-string";
 import {
   fetchUtils,
@@ -92,8 +93,10 @@ export default (
         filter: JSON.stringify({ id: params.ids }),
       };
       const url = `${apiUrl}/${resource}?${stringify(query)}`;
-      const { json } = await httpClient(url);
-      return { data: json };
+      const { json } = await httpClient(url, options);
+      return {
+        data: json.data,
+      };
     },
 
     getManyReference: (
@@ -157,6 +160,7 @@ export default (
           };
         }
         return { data: {} };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         if (error.status === 401) {
           InfoStorage.removeItem("token");

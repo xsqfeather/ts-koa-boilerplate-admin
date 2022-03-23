@@ -20,7 +20,12 @@ import reviews from "../resources/reviews";
 import SubMenu from "./SubMenu";
 import { AppState } from "../types";
 
-type MenuName = "menuCatalog" | "menuSales" | "menuCustomers" | "menuFiles";
+type MenuName =
+  | "menuCatalog"
+  | "menuSales"
+  | "menuCustomers"
+  | "menuFiles"
+  | "menuCollectors";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const MenuItemLinkAsAny: any = MenuItemLink;
 
@@ -47,6 +52,7 @@ const Menu = ({ dense = false }: MenuProps): ReactElement => {
     menuSales: true,
     menuCustomers: true,
     menuFiles: false,
+    menuCollectors: false,
   });
   const translate = useTranslate();
   const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
@@ -183,6 +189,25 @@ const Menu = ({ dense = false }: MenuProps): ReactElement => {
             smart_count: 2,
           })}
           leftIcon={<invoices.icon />}
+          dense={dense}
+        />
+      </SubMenu>
+      <SubMenu
+        handleToggle={(): void => handleToggle("menuCollectors")}
+        isOpen={state.menuCollectors}
+        name="pos.menu.menuCollectors"
+        icon={<orders.icon />}
+        dense={dense}
+      >
+        <MenuItemLinkAsAny
+          to={{
+            pathname: "/videoCollectors",
+            state: { _scrollToTop: true },
+          }}
+          primaryText={translate(`resources.videoCollectors.name`, {
+            smart_count: 2,
+          })}
+          leftIcon={<orders.icon />}
           dense={dense}
         />
       </SubMenu>

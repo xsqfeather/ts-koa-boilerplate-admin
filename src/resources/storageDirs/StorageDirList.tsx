@@ -4,6 +4,7 @@ import {
   Datagrid,
   List,
   ListProps,
+  ReferenceField,
   TextField,
 } from "react-admin";
 import { PublishManyButton } from "../../buttons/PublishButton";
@@ -21,10 +22,9 @@ export const StorageDirList = (props: ListProps): JSX.Element => (
   <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
     <Datagrid rowClick="edit">
       <TextField source="name" />
-      <TextField source="ipfsCid" />
-      <TextField source="superior.ipfsPath" />
-      <TextField source="owner" />
-      <TextField source="status" />
+      <ReferenceField source="superiorId" reference="storageDirs">
+        <TextField source="name" />
+      </ReferenceField>
     </Datagrid>
   </List>
 );

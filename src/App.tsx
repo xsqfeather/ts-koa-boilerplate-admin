@@ -1,4 +1,4 @@
-import { Admin, Resource } from "react-admin";
+import { Admin, Resource, ListGuesser } from "react-admin";
 
 import authProvider from "./authProvider";
 import themeReducer from "./themeReducer";
@@ -24,6 +24,8 @@ import products from "./resources/products";
 import categories from "./resources/categories";
 import reviews from "./resources/reviews";
 import storageDirs from "./resources/storageDirs";
+import videoCollectors from "./resources/videoCollectors";
+import VodResources from "./resources/VodResources";
 
 const i18nProvider = polyglotI18nProvider((locale) => {
   if (locale === "fr") {
@@ -71,6 +73,9 @@ const App = (): JSX.Element => (
     <Resource name="categories" {...categories} />
     <Resource name="reviews" {...reviews} />
     <Resource name="storageDirs" {...storageDirs} />
+    <Resource name="storageFiles" {...storageDirs} />
+    <Resource name="videoCollectors" {...videoCollectors} />
+    <Resource name="vodResources" {...VodResources} />
   </Admin>
 );
 
