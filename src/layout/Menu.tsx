@@ -25,7 +25,8 @@ type MenuName =
   | "menuSales"
   | "menuCustomers"
   | "menuFiles"
-  | "menuCollectors";
+  | "menuCollectors"
+  | "menuVodResources";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const MenuItemLinkAsAny: any = MenuItemLink;
 
@@ -53,6 +54,7 @@ const Menu = ({ dense = false }: MenuProps): ReactElement => {
     menuCustomers: true,
     menuFiles: false,
     menuCollectors: false,
+    menuVodResources: true,
   });
   const translate = useTranslate();
   const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
@@ -205,6 +207,25 @@ const Menu = ({ dense = false }: MenuProps): ReactElement => {
             state: { _scrollToTop: true },
           }}
           primaryText={translate(`resources.videoCollectors.name`, {
+            smart_count: 2,
+          })}
+          leftIcon={<orders.icon />}
+          dense={dense}
+        />
+      </SubMenu>
+      <SubMenu
+        handleToggle={(): void => handleToggle("menuVodResources")}
+        isOpen={state.menuVodResources}
+        name="pos.menu.menuVodResources"
+        icon={<orders.icon />}
+        dense={dense}
+      >
+        <MenuItemLinkAsAny
+          to={{
+            pathname: "/VodResources",
+            state: { _scrollToTop: true },
+          }}
+          primaryText={translate(`resources.VodResources.name`, {
             smart_count: 2,
           })}
           leftIcon={<orders.icon />}
